@@ -1,62 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Accedi con Google</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <style>
     body {
-      background-color: #f2f2f2;
       font-family: Arial, sans-serif;
       display: flex;
-      height: 100vh;
       justify-content: center;
       align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
     }
-    .login-box {
+    .container {
       text-align: center;
-      background: white;
+      background-color: white;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .google-btn {
-      background-color: #db4437;
-      color: white;
-      padding: 10px 25px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 15px;
+      gap: 10px;
+      background-color: #db4437;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .google-btn:hover {
+      background-color: #c33d2e;
     }
     .google-btn img {
+      width: 20px;
       height: 20px;
-      margin-right: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="login-box">
+  <div class="container">
     <h2>Accedi con Google</h2>
     <button class="google-btn" onclick="loginConGoogle()">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo">
-      Accedi con Google
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
+      <span>Accedi con Google</span>
     </button>
   </div>
 
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyDJS50lxZCcxJhnax6Zb5zagNNu29Co5KjM",
+      apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
       authDomain: "betforge-2d7ea.firebaseapp.com",
-      projectId: "betforge-2d7ea",
-      storageBucket: "betforge-2d7ea.appspot.com",
-      messagingSenderId: "419419713307",
-      appId: "1:419419713307:web:cba6a47995923df91f2dbe"
+      databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
+     projectId: "betforge-2d7ea",
+     storageBucket: "betforge-2d7ea.firebasestorage.app",
+     messagingSenderId: "419419713307",
+     appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -65,15 +71,17 @@
     function loginConGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
-        .then(result => {
+        .then((result) => {
+          // Set variabile per l'app Thunkable
+          window.localStorage.setItem("vai_a_home", "true");
           window.location.href = "home.html";
         })
-        .catch(error => {
+        .catch((error) => {
           alert("Errore: " + error.message);
         });
     }
 
-    auth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged((user) => {
       if (user) {
         window.location.href = "home.html";
       }
