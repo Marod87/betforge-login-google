@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -13,24 +13,26 @@
   <script>
     // Configurazione del tuo progetto Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
+      apiKey: "AIzaSyDjS50lXzCCxJhax6Zb5zagNNu29Co5KjM",
       authDomain: "betforge-2d7ea.firebaseapp.com",
       projectId: "betforge-2d7ea",
-      storageBucket: "betforge-2d7ea.firebasestorage.app",
+      storageBucket: "betforge-2d7ea.appspot.com",
       messagingSenderId: "419419713307",
       appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
 
+    // Inizializza Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    // Funzione di login con Google
     function loginConGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
-        .then(result => {
+        .then((result) => {
           alert("Login effettuato come: " + result.user.email);
         })
-        .catch(error => {
+        .catch((error) => {
           alert("Errore: " + error.message);
         });
     }
