@@ -1,40 +1,38 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Accedi con Google</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <style>
     body {
+      background-color: #f2f2f2;
       font-family: Arial, sans-serif;
       display: flex;
       height: 100vh;
       justify-content: center;
       align-items: center;
-      background: #f2f2f2;
     }
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    .login-box {
       text-align: center;
-    }
-    h2 {
-      margin-bottom: 20px;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .google-btn {
       background-color: #db4437;
       color: white;
-      padding: 10px 20px;
+      padding: 10px 25px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 16px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: 15px;
     }
     .google-btn img {
       height: 20px;
@@ -43,17 +41,17 @@
   </style>
 </head>
 <body>
-  <div class="card">
+  <div class="login-box">
     <h2>Accedi con Google</h2>
     <button class="google-btn" onclick="loginConGoogle()">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo">
       Accedi con Google
     </button>
   </div>
 
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyDJS50IxZCxJhx...tuachiave...",
+      apiKey: "AIzaSyDJS50lxZCcxJhnax6Zb5zagNNu29Co5KjM",
       authDomain: "betforge-2d7ea.firebaseapp.com",
       projectId: "betforge-2d7ea",
       storageBucket: "betforge-2d7ea.appspot.com",
@@ -67,20 +65,16 @@
     function loginConGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
-        .then((result) => {
-          // Invia messaggio a Thunkable
-          window.parent.postMessage("vai_home", "*");
-          // Vai alla home
+        .then(result => {
           window.location.href = "home.html";
         })
-        .catch((error) => {
+        .catch(error => {
           alert("Errore: " + error.message);
         });
     }
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(user => {
       if (user) {
-        window.parent.postMessage("vai_home", "*");
         window.location.href = "home.html";
       }
     });
