@@ -1,80 +1,58 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Benvenuto</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f7f7;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      text-align: center;
+      padding-top: 100px;
+      background: #f7f7f7;
     }
     .container {
+      display: inline-block;
       background: white;
       padding: 30px;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
     }
-    .email {
-      margin-bottom: 20px;
-      font-size: 18px;
+    h1 {
       color: #333;
     }
     button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
       background-color: #db4437;
       color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #c1351d;
-    }
   </style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body>
   <div class="container">
-    <h2>Benvenuto!</h2>
-    <div class="email" id="userEmail">Caricamento...</div>
+    <h1>Benvenuto!</h1>
+    <p>Hai effettuato l’accesso con successo.</p>
     <button onclick="logout()">Esci</button>
   </div>
 
   <script>
-    // Inserisci i tuoi dati Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
+      apiKey: "AIzaSyDJS50IxZCxJhx...tuachiave...",
       authDomain: "betforge-2d7ea.firebaseapp.com",
-      databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
       projectId: "betforge-2d7ea",
-      storageBucket: "betforge-2d7ea.firebasestorage.app",
+      storageBucket: "betforge-2d7ea.appspot.com",
       messagingSenderId: "419419713307",
       appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-
-    // Controllo utente loggato
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        document.getElementById('userEmail').textContent = user.email;
-      } else {
-        window.location.href = "index.html";
-      }
-    });
 
     function logout() {
       auth.signOut().then(() => {
