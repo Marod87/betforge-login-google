@@ -1,49 +1,47 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Benvenuto</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <style>
     body {
+      background-color: #f7f7f7;
       font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 100px;
-      background: #f7f7f7;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
     }
-    .container {
-      display: inline-block;
-      background: white;
+    .home-box {
+      background-color: white;
       padding: 30px;
-      border-radius: 12px;
+      border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #333;
+      text-align: center;
     }
     button {
-      margin-top: 20px;
       padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      background-color: #db4437;
+      background-color: #555;
       color: white;
-      border-radius: 6px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
       cursor: pointer;
     }
   </style>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Benvenuto!</h1>
-    <p>Hai effettuato l’accesso con successo.</p>
+  <div class="home-box">
+    <h2>Benvenuto!</h2>
+    <p id="user-info">Caricamento...</p>
     <button onclick="logout()">Esci</button>
   </div>
 
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyDJS50IxZCxJhx...tuachiave...",
+      apiKey: "AIzaSyDJS50lxZCcxJhnax6Zb5zagNNu29Co5KjM",
       authDomain: "betforge-2d7ea.firebaseapp.com",
       projectId: "betforge-2d7ea",
       storageBucket: "betforge-2d7ea.appspot.com",
@@ -53,6 +51,14 @@
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("user-info").innerText = "Sei loggato come: " + user.email;
+      } else {
+        window.location.href = "index.html";
+      }
+    });
 
     function logout() {
       auth.signOut().then(() => {
