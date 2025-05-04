@@ -2,54 +2,57 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Login con Google</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    html, body {
       margin: 0;
       padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      font-family: 'Arial', sans-serif;
       background-color: #f3f3f3;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .card {
       background-color: white;
-      padding: 30px;
-      border-radius: 15px;
+      padding: 2rem;
+      border-radius: 1rem;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
       text-align: center;
-      width: 90%;
-      max-width: 400px;
+      width: 90vw;
+      max-width: 350px;
     }
 
-    .card h2 {
-      margin-bottom: 20px;
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .google-btn {
       background-color: #db4437;
       color: white;
-      padding: 12px 20px;
       border: none;
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 0.7rem;
+      padding: 1rem;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      cursor: pointer;
+      gap: 0.8rem;
       width: 100%;
+      cursor: pointer;
     }
 
     .google-btn img {
       width: 20px;
       height: 20px;
+      image-rendering: auto;
+      max-width: 100%;
     }
   </style>
 </head>
@@ -70,7 +73,7 @@
       projectId: "betforge-2d7ea",
       storageBucket: "betforge-2d7ea.firebasestorage.app",
       messagingSenderId: "419419713307",
-      appId: "1:419419713307:web:cba6a47995923df91f2dbe"      
+      appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
 
     firebase.initializeApp(firebaseConfig);
