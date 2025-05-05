@@ -3,8 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <title>Benvenuto</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script type="module">
+    // Import Firebase (modular style)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
+      authDomain: "betforge-2d7ea.firebaseapp.com",
+      databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "betforge-2d7ea",
+      storageBucket: "betforge-2d7ea.firebasestorage.app",
+      messagingSenderId: "419419713307",
+      appId: "1:419419713307:web:cba6a47995923df91f2dbe"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Mostra email se loggato
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("userEmail").textContent = "Sei loggato come: " + user.email;
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+
+    // Logout
+    window.logout = function () {
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      }).catch((error) => {
+        alert("Errore nel logout: " + error.message);
+      });
+    };
+  </script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,30 +51,27 @@
     }
     .card {
       background: white;
-      padding: 25px 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
-      width: 90%;
-      max-width: 400px;
     }
     h1 {
-      font-size: 24px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     p {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
     button {
-      padding: 10px 25px;
-      background-color: #333;
+      padding: 10px 20px;
+      background: #333;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #555;
+      background: #555;
     }
   </style>
 </head>
@@ -50,41 +81,5 @@
     <p id="userEmail">Sei loggato come: ...</p>
     <button onclick="logout()">Esci</button>
   </div>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
-      authDomain: "betforge-2d7ea.firebaseapp.com",
-      databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "betforge-2d7ea",
-      storageBucket: "betforge-2d7ea.firebasestorage.app",
-      messagingSenderId: "419419713307",
-      appId: "1:419419713307:web:cba6a47995923df91f2dbe"
-    };
-
-    // Inizializza Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Verifica utente loggato
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        document.getElementById("userEmail").textContent = "Sei loggato come: " + user.email;
-      } else {
-        // se non loggato torna alla pagina iniziale
-        window.location.href = "index.html";
-      }
-    });
-
-    function logout() {
-      auth.signOut()
-        .then(() => {
-          window.location.href = "index.html";
-        })
-        .catch((error) => {
-          alert("Errore: " + error.message);
-        });
-    }
-  </script>
 </body>
 </html>
