@@ -2,13 +2,13 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Home - Benvenuto</title>
+  <title>Benvenuto</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #e9eff1;
+      background-color: #f0f2f5;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,10 +16,10 @@
       margin: 0;
     }
     .card {
-      background-color: white;
-      padding: 30px;
+      background: white;
+      padding: 25px 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       text-align: center;
       width: 90%;
       max-width: 400px;
@@ -32,10 +32,9 @@
       margin-bottom: 25px;
     }
     button {
-      padding: 10px 20px;
-      font-size: 16px;
-      color: white;
+      padding: 10px 25px;
       background-color: #333;
+      color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
@@ -48,39 +47,43 @@
 <body>
   <div class="card">
     <h1>Benvenuto!</h1>
-    <p id="userEmail">Sei loggato come:</p>
+    <p id="userEmail">Sei loggato come: ...</p>
     <button onclick="logout()">Esci</button>
   </div>
 
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
-  authDomain: "betforge-2d7ea.firebaseapp.com",
-  databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "betforge-2d7ea",
-  storageBucket: "betforge-2d7ea.firebasestorage.app",
-  messagingSenderId: "419419713307",
-  appId: "1:419419713307:web:cba6a47995923df91f2dbe"
+      authDomain: "betforge-2d7ea.firebaseapp.com",
+      databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "betforge-2d7ea",
+      storageBucket: "betforge-2d7ea.firebasestorage.app",
+      messagingSenderId: "419419713307",
+      appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
 
+    // Inizializza Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    auth.onAuthStateChanged(user => {
+    // Verifica utente loggato
+    auth.onAuthStateChanged((user) => {
       if (user) {
         document.getElementById("userEmail").textContent = "Sei loggato come: " + user.email;
       } else {
-        // Se non autenticato, torna al login
+        // se non loggato torna alla pagina iniziale
         window.location.href = "index.html";
       }
     });
 
     function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      }).catch(error => {
-        alert("Errore durante il logout: " + error.message);
-      });
+      auth.signOut()
+        .then(() => {
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          alert("Errore: " + error.message);
+        });
     }
   </script>
 </body>
