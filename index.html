@@ -1,57 +1,63 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <title>Accedi con Google</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <meta charset="UTF-8">
+  <title>Accedi</title>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f5f5f5;
-    }
-    .container {
       text-align: center;
-      background-color: white;
+      background-color: #f0f0f0;
+    }
+    .card {
+      background: white;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin: 10vh auto;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-    .google-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    button {
       background-color: #db4437;
       color: white;
-      padding: 12px 20px;
-      font-size: 16px;
       border: none;
-      border-radius: 5px;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border-radius: 4px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      font-size: 16px;
     }
-    .google-btn:hover {
-      background-color: #c33d2e;
+    input {
+      padding: 10px;
+      width: 90%;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-    .google-btn img {
-      width: 20px;
-      height: 20px;
+    #logo {
+      height: 24px;
+      vertical-align: middle;
+      margin-right: 8px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="card">
     <h2>Accedi con Google</h2>
-    <button class="google-btn" onclick="loginConGoogle()">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
-      <span>Accedi con Google</span>
+    <button onclick="loginConGoogle()">
+      <img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg">
+      Accedi con Google
     </button>
+    <hr>
+    <h3>Oppure con email</h3>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="loginConEmail()">Accedi</button>
+    <button onclick="registrati()">Registrati</button>
   </div>
 
   <script>
@@ -59,29 +65,50 @@
       apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
       authDomain: "betforge-2d7ea.firebaseapp.com",
       databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
-     projectId: "betforge-2d7ea",
-     storageBucket: "betforge-2d7ea.firebasestorage.app",
-     messagingSenderId: "419419713307",
-     appId: "1:419419713307:web:cba6a47995923df91f2dbe"
+      projectId: "betforge-2d7ea",
+      storageBucket: "betforge-2d7ea.firebasestorage.app",
+      messagingSenderId: "419419713307",
+      appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
-
     firebase.initializeApp(firebaseConfig);
+
     const auth = firebase.auth();
+    const db = firebase.database();
 
     function loginConGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
-        .then((result) => {
-          // Set variabile per l'app Thunkable
-          window.localStorage.setItem("vai_a_home", "true");
+        .then(result => {
           window.location.href = "home.html";
         })
-        .catch((error) => {
-          alert("Errore: " + error.message);
+        .catch(error => {
+          alert("Errore Google: " + error.message);
         });
     }
 
-    auth.onAuthStateChanged((user) => {
+    function loginConEmail() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => window.location.href = "home.html")
+        .catch(error => alert("Errore email: " + error.message));
+    }
+
+    function registrati() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(userCred => {
+          const uid = userCred.user.uid;
+          db.ref("utenti/" + uid).set({
+            email: email
+          });
+          window.location.href = "home.html";
+        })
+        .catch(error => alert("Errore registrazione: " + error.message));
+    }
+
+    auth.onAuthStateChanged(user => {
       if (user) {
         window.location.href = "home.html";
       }
