@@ -2,12 +2,65 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Benvenuto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e5eff5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 300px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    #logoutBtn {
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #logoutBtn:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Benvenuto!</h2>
+    <p>Sei loggato come: <span id="userEmail">...</span></p>
+    <button id="logoutBtn">Esci</button>
+  </div>
+
   <script type="module">
-    // Import Firebase (modular style)
+    // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
+    // Configurazione Firebase (🔁 Sostituisci questi dati con i tuoi reali)
     const firebaseConfig = {
       apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
       authDomain: "betforge-2d7ea.firebaseapp.com",
@@ -18,68 +71,28 @@
       appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
 
+    // Inizializza Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Mostra email se loggato
+    // Controlla se l'utente è autenticato
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        document.getElementById("userEmail").textContent = "Sei loggato come: " + user.email;
+        document.getElementById("userEmail").textContent = user.email;
       } else {
+        // Se non loggato, torna alla pagina di login
         window.location.href = "index.html";
       }
     });
 
     // Logout
-    window.logout = function () {
+    document.getElementById("logoutBtn").addEventListener("click", () => {
       signOut(auth).then(() => {
         window.location.href = "index.html";
       }).catch((error) => {
-        alert("Errore nel logout: " + error.message);
+        alert("Errore durante il logout: " + error.message);
       });
-    };
+    });
   </script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    h1 {
-      margin-bottom: 10px;
-    }
-    p {
-      margin-bottom: 20px;
-    }
-    button {
-      padding: 10px 20px;
-      background: #333;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #555;
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>Benvenuto!</h1>
-    <p id="userEmail">Sei loggato come: ...</p>
-    <button onclick="logout()">Esci</button>
-  </div>
 </body>
 </html>
