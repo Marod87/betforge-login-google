@@ -2,52 +2,60 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Benvenuto</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <title>Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #eaf3fa;
+      background-color: #f3f6fa;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
       margin: 0;
     }
-
     .box {
       background: white;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
       text-align: center;
-      width: 300px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      width: 320px;
     }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      background: #333;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
+    h2 {
+      margin-bottom: 10px;
     }
-
     p {
       font-size: 16px;
+      margin: 5px 0;
+    }
+    button {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #000;
     }
   </style>
 </head>
 <body>
   <div class="box">
     <h2>Benvenuto!</h2>
-    <p id="user-info">Caricamento...</p>
-    <button onclick="logout()">Esci</button>
+    <p id="user-info">Caricamento in corso...</p>
+    <button id="logout-btn">Esci</button>
   </div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
   <script>
+    // CONFIGURAZIONE FIREBASE
     const firebaseConfig = {
       apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
       authDomain: "betforge-2d7ea.firebaseapp.com",
@@ -58,9 +66,17 @@
       appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
 
-    const app = firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    // Logout
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    });
+
+    // Recupero utente loggato
     auth.onAuthStateChanged(user => {
       if (user) {
         const name = user.displayName || "Utente";
@@ -70,12 +86,6 @@
         window.location.href = "index.html";
       }
     });
-
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      });
-    }
   </script>
 </body>
 </html>
