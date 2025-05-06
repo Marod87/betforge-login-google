@@ -2,124 +2,126 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Accedi</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
+      background: #f5f5f5;
     }
 
-    .login-container {
+    .container {
       background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       text-align: center;
-      width: 300px;
     }
 
-    button {
-      background-color: #db4437;
-      color: white;
+    .btn {
+      padding: 10px 20px;
+      margin: 10px 5px;
       border: none;
-      padding: 10px 15px;
-      font-size: 16px;
-      border-radius: 5px;
+      background-color: #d93025;
+      color: white;
+      font-weight: bold;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 10px auto;
+      border-radius: 5px;
     }
 
-    button img {
-      width: 20px;
-      margin-right: 8px;
-    }
-
-    input {
-      width: 100%;
+    .input {
       padding: 10px;
-      margin: 8px 0;
-      box-sizing: border-box;
+      margin: 10px 0;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
-    .email-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-    }
-
-    .email-buttons button {
-      width: 48%;
+    img.google-icon {
+      height: 16px;
+      vertical-align: middle;
+      margin-right: 8px;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
+  <div class="container">
     <h2>Accedi con Google</h2>
-    <button onclick="loginConGoogle()">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+    <button class="btn" onclick="loginConGoogle()">
+      <img src="https://img.icons8.com/color/16/000000/google-logo.png" class="google-icon" alt="Google logo">
       Accedi con Google
     </button>
 
     <hr>
-    <p>Oppure con email</p>
 
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-
-    <div class="email-buttons">
-      <button onclick="loginEmail()">Accedi</button>
-      <button onclick="registrati()">Registrati</button>
-    </div>
+    <h3>Oppure con email</h3>
+    <input type="email" id="email" class="input" placeholder="Email"><br>
+    <input type="password" id="password" class="input" placeholder="Password"><br>
+    <button class="btn" onclick="loginEmail()">Accedi</button>
+    <button class="btn" onclick="registrati()">Registrati</button>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script>
+    // CONFIGURAZIONE FIREBASE
     const firebaseConfig = {
-     apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
-     authDomain: "betforge-2d7ea.firebaseapp.com",
-     databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
-     projectId: "betforge-2d7ea",
-     storageBucket: "betforge-2d7ea.firebasestorage.app",
-     messagingSenderId: "419419713307",
-     appId: "1:419419713307:web:cba6a47995923df91f2dbe"
+      apiKey: "AIzaSyDjS50lxZCcxJhax6Zb5zagNNu29Co5KjM",
+      authDomain: "betforge-2d7ea.firebaseapp.com",
+      databaseURL: "https://betforge-2d7ea-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "betforge-2d7ea",
+      storageBucket: "betforge-2d7ea.firebasestorage.app",
+      messagingSenderId: "419419713307",
+      appId: "1:419419713307:web:cba6a47995923df91f2dbe"
     };
 
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
 
+    // LOGIN CON GOOGLE
     function loginConGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
-        .then(result => window.location.href = "home.html")
-        .catch(error => alert("Errore: " + error.message));
+        .then(result => {
+          window.location.href = "home.html";
+        })
+        .catch(error => {
+          alert("Errore: " + error.message);
+        });
     }
 
+    // LOGIN CON EMAIL
     function loginEmail() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+
       auth.signInWithEmailAndPassword(email, password)
-        .then(() => window.location.href = "home.html")
-        .catch(error => alert("Errore login: " + error.message));
+        .then(() => {
+          window.location.href = "home.html";
+        })
+        .catch(error => {
+          alert("Errore login: " + error.message);
+        });
     }
 
+    // REGISTRAZIONE
     function registrati() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+
       auth.createUserWithEmailAndPassword(email, password)
-        .then(() => window.location.href = "home.html")
-        .catch(error => alert("Errore registrazione: " + error.message));
+        .then(() => {
+          window.location.href = "home.html";
+        })
+        .catch(error => {
+          alert("Errore registrazione: " + error.message);
+        });
     }
 
+    // REDIRECT SE GIÀ LOGGATO
     auth.onAuthStateChanged(user => {
       if (user) {
         window.location.href = "home.html";
